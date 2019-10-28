@@ -9,27 +9,30 @@ import game_framework
 
 #from boy import Boy
 from PuyoBackground import Background
-
+from PuyoBackground import Stage
 
 
 name = "MainState"
 
 #boy = None
 PuyoBackground = None
+PuyoStage = None
 font = None
 
 
 
 def enter():
-    global PuyoBackground#,boy
+    global PuyoBackground, PuyoStage#,boy
     #boy = Boy()
     PuyoBackground = Background()
+    PuyoStage = Stage()
 
 
 def exit():
-    global PuyoBackground #,boy
+    global PuyoBackground , PuyoStage #,boy
     #del boy
     del PuyoBackground
+    del PuyoStage
 
 
 
@@ -60,6 +63,7 @@ def update():
 def draw():
     clear_canvas()
     PuyoBackground.draw()
+    PuyoStage.draw()
     #boy.draw()
     update_canvas()
 
