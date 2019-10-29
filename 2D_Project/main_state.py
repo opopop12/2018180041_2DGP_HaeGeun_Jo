@@ -10,11 +10,12 @@ import game_framework
 #from boy import Boy
 from PuyoBackground import Background
 from PuyoBackground import Stage
+from puyo import Puyo
 
 
 name = "MainState"
 
-#boy = None
+puyo = None
 PuyoBackground = None
 PuyoStage = None
 font = None
@@ -22,15 +23,15 @@ font = None
 
 
 def enter():
-    global PuyoBackground, PuyoStage#,boy
-    #boy = Boy()
+    global PuyoBackground, PuyoStage, puyo
+    puyo = Puyo()
     PuyoBackground = Background()
     PuyoStage = Stage()
 
 
 def exit():
-    global PuyoBackground , PuyoStage #,boy
-    #del boy
+    global PuyoBackground , PuyoStage ,puyo
+    del puyo
     del PuyoBackground
     del PuyoStage
 
@@ -51,20 +52,20 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
-        #else:
-           # boy.handle_event(event)
+        else:
+            puyo.handle_event(event)
 
 
 
 def update():
     pass
-    #boy.update()
+    puyo.update()
 
 def draw():
     clear_canvas()
     PuyoBackground.draw()
     PuyoStage.draw()
-    #boy.draw()
+    puyo.draw()
     update_canvas()
 
 

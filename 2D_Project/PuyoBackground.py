@@ -20,6 +20,7 @@ class Stage:
 
         self.image.clip_draw(0, 202, 300, 44, 480, 939, 300*1.49, 66)
         self.image.clip_draw(0, 158, 300, 44, 480, 142, 300*1.49, 66)
+
         self.image2.clip_draw(141, 0, 12, 250, 692, 362, 12*1.49, 375)
         self.image2.clip_draw(124, 0, 12, 250, 265, 362, 12*1.49, 375)
         self.image2.clip_draw(59, 0, 12, 250, 692, 728, 12*1.49, 375)
