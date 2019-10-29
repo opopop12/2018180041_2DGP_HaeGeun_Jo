@@ -2,6 +2,8 @@ from pico2d import *
 from puyos import Puyos
 import random
 import game_world
+import game_framework
+import main_state
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, Z_DOWN, X_DOWN,\
 RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP,PUYO_TIMER = range(13)
@@ -39,15 +41,15 @@ class IdleState:
 
     @staticmethod
     def exit(puyo, event):
-        if event == PUYO_TIMER:
-            Puyo.newpuyo()
+        #if event == PUYO_TIMER:
+        #    Puyo.newpuyo(puyo)
         pass
     @staticmethod
     def do(puyo):
         if puyo.y > puyo.lastline:
             puyo.y -= puyo.gravity
-        if puyo.y == puyo.lastline:
-            puyo.add_event(PUYO_TIMER)
+        #if puyo.y == puyo.lastline:
+        #    puyo.add_event(PUYO_TIMER)
         #puyo.x = 35*1.49*puyo.line
         #delay(100)
         pass
@@ -70,8 +72,10 @@ class DropState:
 
     @staticmethod
     def exit(puyo,event):
-        if event == PUYO_TIMER:
-            Puyo.newpuyo(puyo)
+        #if event == PUYO_TIMER:
+        #    Puyo.newpuyo(puyo)
+        if puyo.y==200:
+            game_framework.push_state(main_state)
         pass
     @staticmethod
     def do(puyo):
@@ -83,8 +87,8 @@ class DropState:
             puyo.y -= puyo.gravity
         if puyo.y > puyo.lastline:
             puyo.x = 445 + 35*2*puyo.line
-        if puyo.y == puyo.lastline:
-            puyo.add_event(PUYO_TIMER)
+        #if puyo.y == puyo.lastline:
+        #    puyo.add_event(PUYO_TIMER)
     @staticmethod
     def draw(puyo):
         puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
@@ -93,6 +97,10 @@ class DropState:
 
 
 class RotateState:
+    @staticmethod
+    def enter (puyo,event):
+       # if event == Z_DOWN:
+        pass
     pass
 
 
@@ -120,7 +128,7 @@ next_state_table = {
 class Puyo:
 
     def __init__(self):
-        self.x, self.y = 445,720
+        self.x, self.y = 445,830
         self.image = load_image('PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
         self.lastline = 200
         self.line = 0
@@ -136,7 +144,7 @@ class Puyo:
         pass
 
     def newpuyo(self):
-        puyos = Puyos(self.x, self.y, self.dir * 3)
+        puyos = Puyos(445, 720, self.gravity)
         game_world.add_object(puyos, 1)
         pass
 

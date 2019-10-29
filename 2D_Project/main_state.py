@@ -17,27 +17,24 @@ from puyo import Puyo
 name = "MainState"
 
 puyo = None
+puyo1 =None
 PuyoBackground = None
 PuyoStage = None
 font = None
 
-
-
 def enter():
-    global PuyoBackground, PuyoStage, puyo
+    global PuyoBackground, PuyoStage, puyo, puyo1
     puyo = Puyo()
+    puyo1 = Puyo()
     PuyoBackground = Background()
     PuyoStage = Stage()
-    game_world.add_object(PuyoBackground,0)
-    game_world.add_object(PuyoStage,0)
-    game_world.add_object(puyo,1)
 
 def exit():
-    #global PuyoBackground , PuyoStage ,puyo
-    #del puyo
-    #del PuyoBackground
-    #del PuyoStage
-    game_world.clear()
+    global PuyoBackground , PuyoStage ,puyo, puyo1
+    del puyo
+    del PuyoBackground
+    del PuyoStage
+    del puyo1
 
 
 
@@ -50,6 +47,8 @@ def resume():
 
 
 def handle_events():
+    global  index
+    index=0
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -57,23 +56,23 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            puyo.handle_event(event)
-
+            if index == 0:
+                puyo.handle_event(event)
+                index +=1
+            elif index == 1:
+                puyo1.handle_event(event)
+                index -=1
 
 
 def update():
-    for game_object in game_world.all_objects():
-        game_object.update()
-    #puyo.update()
+    puyo.update()
 
 def draw():
     clear_canvas()
-    for game_object in game_world.all_objects():
-        game_object.draw()
-
-    #PuyoBackground.draw()
-    #PuyoStage.draw()
-    #puyo.draw()
+    PuyoBackground.draw()
+    PuyoStage.draw()
+    puyo.draw()
+    puyo1.draw()
     update_canvas()
 
 
