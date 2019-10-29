@@ -1,7 +1,10 @@
 from pico2d import *
+from puyos import Puyos
+import random
+import game_world
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, Z_DOWN, X_DOWN,\
-RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP = range(12)
+RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP,PUYO_TIMER = range(13)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -29,33 +32,46 @@ class IdleState:
             puyo.line -=1
             pass
         elif event == DOWN_DOWN:
-            #puyo.gravity +=1
+            puyo.gravity +=1
             pass
+        elif event == DOWN_UP:
+            puyo.gravity = 1
 
     @staticmethod
     def exit(puyo, event):
+        if event == PUYO_TIMER:
+            Puyo.newpuyo()
         pass
     @staticmethod
     def do(puyo):
-        if puyo.y > 200:
+        if puyo.y > puyo.lastline:
             puyo.y -= puyo.gravity
+        if puyo.y == puyo.lastline:
+            puyo.add_event(PUYO_TIMER)
         #puyo.x = 35*1.49*puyo.line
         #delay(100)
         pass
     @staticmethod
     def draw(puyo):
-        puyo.image.clip_draw(0,453,35,35,puyo.x,puyo.y,35*2,35*2)
+        puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
+        puyo.image.clip_draw(0,488-puyo.frame2*35,35,35,puyo.x,puyo.y,35*2,35*2)
 
 class DropState:
     @staticmethod
-    def enter(puyo,event):
+    def enter(puyo, event):
         if event == RIGHT_DOWN:
             puyo.line +=1
         elif event == LEFT_DOWN:
             puyo.line -=1
+        elif event == DOWN_DOWN:
+            puyo.gravity +=1
+        elif event == DOWN_UP:
+            puyo.gravity = 1
 
     @staticmethod
     def exit(puyo,event):
+        if event == PUYO_TIMER:
+            Puyo.newpuyo(puyo)
         pass
     @staticmethod
     def do(puyo):
@@ -63,10 +79,16 @@ class DropState:
             puyo.line = 3
         elif puyo.line < -2:
             puyo.line = -2
-        puyo.x = 445+ 35*2*puyo.line
+        if puyo.y > puyo.lastline:
+            puyo.y -= puyo.gravity
+        if puyo.y > puyo.lastline:
+            puyo.x = 445 + 35*2*puyo.line
+        if puyo.y == puyo.lastline:
+            puyo.add_event(PUYO_TIMER)
     @staticmethod
     def draw(puyo):
-        puyo.image.clip_draw(0,453,35,35,puyo.x,puyo.y,35*2,35*2)
+        puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
+        puyo.image.clip_draw(0,488-puyo.frame2*35,35,35,puyo.x,puyo.y,35*2,35*2)
     pass
 
 
@@ -80,16 +102,19 @@ next_state_table = {
                 LEFT_UP:DropState, DOWN_UP:DropState,
                 UP_DOWN:RotateState, Z_DOWN:RotateState,
                 X_DOWN:RotateState, UP_UP:RotateState,
-                X_UP:RotateState, Z_UP:RotateState},
+                X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState},
     DropState: {RIGHT_DOWN:IdleState, LEFT_DOWN:IdleState,
                 DOWN_DOWN:IdleState, RIGHT_UP:IdleState,
                 LEFT_UP:IdleState, DOWN_UP:IdleState,
                 UP_DOWN:RotateState, Z_DOWN:RotateState,
                 X_DOWN:RotateState, UP_UP:RotateState,
-                X_UP:RotateState, Z_UP:RotateState},
-    RotateState: {Z_DOWN: DropState, X_DOWN: DropState,
-                  UP_DOWN: DropState, Z_UP: DropState,
-                  X_UP: DropState, UP_UP:DropState}
+                X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState},
+    RotateState: {RIGHT_DOWN:IdleState, LEFT_DOWN:IdleState,
+                DOWN_DOWN:IdleState, RIGHT_UP:IdleState,
+                LEFT_UP:IdleState, DOWN_UP:IdleState,
+                UP_DOWN:RotateState, Z_DOWN:RotateState,
+                X_DOWN:RotateState, UP_UP:RotateState,
+                X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState}
 }
 
 class Puyo:
@@ -97,17 +122,23 @@ class Puyo:
     def __init__(self):
         self.x, self.y = 445,720
         self.image = load_image('PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
-        self.lastline = 0
+        self.lastline = 200
         self.line = 0
+        self.dir = 1
         self.gravity = 1
-        self.gravtimer = 100
-        self.frame = 0
+        self.gravtimer = 200
+        self.frame = random.randint(1,5)
+        self.frame2 = random.randint(1,5)
         self.timer = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self,None)
         pass
 
+    def newpuyo(self):
+        puyos = Puyos(self.x, self.y, self.dir * 3)
+        game_world.add_object(puyos, 1)
+        pass
 
     def change_state(self,  state):
         if len(self.event_que)>0:

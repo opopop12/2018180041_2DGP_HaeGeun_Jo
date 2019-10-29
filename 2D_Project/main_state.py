@@ -4,6 +4,7 @@ import os
 
 from pico2d import *
 
+import game_world
 import game_framework
 
 
@@ -27,13 +28,16 @@ def enter():
     puyo = Puyo()
     PuyoBackground = Background()
     PuyoStage = Stage()
-
+    game_world.add_object(PuyoBackground,0)
+    game_world.add_object(PuyoStage,0)
+    game_world.add_object(puyo,1)
 
 def exit():
-    global PuyoBackground , PuyoStage ,puyo
-    del puyo
-    del PuyoBackground
-    del PuyoStage
+    #global PuyoBackground , PuyoStage ,puyo
+    #del puyo
+    #del PuyoBackground
+    #del PuyoStage
+    game_world.clear()
 
 
 
@@ -58,14 +62,18 @@ def handle_events():
 
 
 def update():
-    pass
-    puyo.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
+    #puyo.update()
 
 def draw():
     clear_canvas()
-    PuyoBackground.draw()
-    PuyoStage.draw()
-    puyo.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
+
+    #PuyoBackground.draw()
+    #PuyoStage.draw()
+    #puyo.draw()
     update_canvas()
 
 

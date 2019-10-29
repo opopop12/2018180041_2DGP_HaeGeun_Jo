@@ -3,7 +3,8 @@ from pico2d import *
 class Background:
     def __init__(self):
         self.image = load_image('5bf0a388b67da.jpg')
-
+    def update(self):
+        pass
     def draw(self):
         self.image.draw(960, 540)
 
@@ -15,6 +16,9 @@ class Stage:
         self.image = load_image('stage.png')
         self.image2 = load_image('stage_sub_3.png')
         self.image3 = load_image('PC Computer - Puyo Puyo Tetris - Character Boards.png')
+
+    def update(self):
+        pass
     def draw(self):
         self.image3.clip_draw(399, 1172, 192, 384, 480, 540, 415, 790)
 
