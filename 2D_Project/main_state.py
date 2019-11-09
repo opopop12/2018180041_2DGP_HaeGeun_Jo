@@ -28,13 +28,12 @@ def enter():
     puyo1 = Puyo()
     PuyoBackground = Background()
     PuyoStage = Stage()
+    game_world.add_object(PuyoBackground,0)
+    game_world.add_object(PuyoStage,1)
+    game_world.add_object(puyo,2)
 
 def exit():
-    global PuyoBackground , PuyoStage ,puyo, puyo1
-    del puyo
-    del PuyoBackground
-    del PuyoStage
-    del puyo1
+    game_world.clear()
 
 
 
