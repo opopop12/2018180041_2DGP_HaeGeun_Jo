@@ -23,9 +23,9 @@ PuyoStage = None
 font = None
 
 def enter():
-    global PuyoBackground, PuyoStage, puyo, puyo1
+    global PuyoBackground, PuyoStage, puyo, puyonext
     puyo = Puyo()
-    puyo1 = Puyo()
+    puyonext = Puyo()
     PuyoBackground = Background()
     PuyoStage = Stage()
     game_world.add_object(PuyoBackground,0)
@@ -59,7 +59,7 @@ def handle_events():
                 puyo.handle_event(event)
                 index +=1
             elif index == 1:
-                puyo1.handle_event(event)
+                puyonext.handle_event(event)
                 index -=1
 
 
