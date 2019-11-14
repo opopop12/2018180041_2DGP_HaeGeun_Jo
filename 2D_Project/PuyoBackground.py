@@ -8,6 +8,8 @@ class Background:
     def draw(self):
         self.image.draw(960, 540)
 
+left = 192
+
 #image * 1.4
 #image2 * 1.5
 #image3 *2  +20
