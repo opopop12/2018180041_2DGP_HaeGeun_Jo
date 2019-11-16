@@ -6,7 +6,7 @@ import game_framework
 import main_state
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, Z_DOWN, X_DOWN,\
-RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP,PUYO_TIMER = range(13)
+RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP, PUYO_TIMER = range(13)
 
 
 key_event_table = {
@@ -135,7 +135,7 @@ class Puyo:
         self.line = 0
         self.dir = 1
         self.gravity = 1
-        self.gravtimer = 200
+        self.gravitytimer = 200
         self.frame = random.randint(1,5)
         self.frame2 = random.randint(1,5)
         self.timer = 0
