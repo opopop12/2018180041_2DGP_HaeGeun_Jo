@@ -12,7 +12,7 @@ left = 192
 
 #image * 1.4
 #image2 * 1.5
-#image3 *2  +20
+#image3 *2  +201
 class Stage:
     def __init__(self):
         self.image = load_image('stage.png')
