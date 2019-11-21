@@ -19,9 +19,13 @@ class Stage:
         self.image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Background\\stage.png')
         self.image2 = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Background\\stage_sub_3.png')
         self.image3 = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Background\\PC Computer - Puyo Puyo Tetris - Character Boards.png')
-
+        self.x, self.y = 480, 142
     def update(self):
         pass
+
+    def get_bb(self):
+        return self.x-150*1.49, self.y-33,self.x+150*1.49,self.y+30
+
     def draw(self):
         self.image3.clip_draw(399, 1172, 192, 384, 480, 540, 415, 790)
 
@@ -32,3 +36,4 @@ class Stage:
         self.image2.clip_draw(124, 0, 12, 250, 265, 362, 12*1.49, 375)
         self.image2.clip_draw(59, 0, 12, 250, 692, 728, 12*1.49, 375)
         self.image2.clip_draw(42, 0, 12, 250, 265, 728, 12*1.49, 375)
+        draw_rectangle(*self.get_bb())

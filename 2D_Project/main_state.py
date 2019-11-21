@@ -67,6 +67,10 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+    if collide(PuyoStage,puyo):
+        game_framework.push_state(main_state)
+    #if collide(puyo, puyo):
+        #game_framework.push_state(main_state)
 
 def draw():
     clear_canvas()

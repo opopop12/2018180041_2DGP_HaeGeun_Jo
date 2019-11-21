@@ -1,9 +1,19 @@
 from pico2d import *
-from puyos import Puyos
 import random
-import game_world
+
 import game_framework
 import main_state
+
+PIXEL_PER_METER = (10.0 / 10.0)
+RUN_SPEED_KMPH = 3.6
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 1.0
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 14
+
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, Z_DOWN, X_DOWN,\
 RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP, PUYO_TIMER = range(13)
@@ -35,15 +45,17 @@ class IdleState:
             puyo.line -=1
             pass
         elif event == DOWN_DOWN:
-            puyo.gravity +=1
+            puyo.gravity +=1 #RUN_SPEED_PPS
             pass
         elif event == DOWN_UP:
-            puyo.gravity = 1
+            puyo.gravity = 1 #RUN_SPEED_PPS
 
     @staticmethod
-    def exit(puyo, event):
+    def exit(puyo,event):
         #if event == PUYO_TIMER:
         #    Puyo.newpuyo(puyo)
+        #if puyo.y == 200:
+        #    game_framework.push_state(main_state)
         pass
     @staticmethod
     def do(puyo):
@@ -88,6 +100,8 @@ class DropState:
             puyo.y -= puyo.gravity
         if puyo.y > puyo.lastline:
             puyo.x = 445 + 35*2*puyo.line
+        #else:
+        #    return Puyo
         #if puyo.y == puyo.lastline:
         #    puyo.add_event(PUYO_TIMER)
     @staticmethod
@@ -144,11 +158,6 @@ class Puyo:
         self.cur_state.enter(self, None)
         pass
 
-    def newpuyo(self):
-        puyos = Puyos(445, 720, self.gravity)
-        game_world.add_object(puyos, 1)
-        pass
-
     def change_state(self,  state):
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -159,7 +168,7 @@ class Puyo:
         pass
 
     def get_bb(self):
-        return self.x - 35, self.y - 35, self.x + 35, self.y + 35
+        return self.x - 35, self.y - 30, self.x + 35, self.y + 35
 
     def add_event(self, event):
         self.event_que.insert(0, event)
