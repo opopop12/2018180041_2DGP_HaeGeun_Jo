@@ -52,19 +52,12 @@ class IdleState:
 
     @staticmethod
     def exit(puyo,event):
-        #if event == PUYO_TIMER:
-        #    Puyo.newpuyo(puyo)
-        #if puyo.y == 200:
-        #    game_framework.push_state(main_state)
         pass
+
     @staticmethod
     def do(puyo):
         if puyo.y > puyo.lastline:
             puyo.y -= puyo.gravity
-        #if puyo.y == puyo.lastline:
-        #    puyo.add_event(PUYO_TIMER)
-        #puyo.x = 35*1.49*puyo.line
-        #delay(100)
         pass
     @staticmethod
     def draw(puyo):
@@ -85,11 +78,8 @@ class DropState:
 
     @staticmethod
     def exit(puyo,event):
-        #if event == PUYO_TIMER:
-        #    Puyo.newpuyo(puyo)
-        if puyo.y==200:
-            game_framework.push_state(main_state)
         pass
+
     @staticmethod
     def do(puyo):
         if puyo.line > 3:
@@ -100,10 +90,7 @@ class DropState:
             puyo.y -= puyo.gravity
         if puyo.y > puyo.lastline:
             puyo.x = 445 + 35*2*puyo.line
-        #else:
-        #    return Puyo
-        #if puyo.y == puyo.lastline:
-        #    puyo.add_event(PUYO_TIMER)
+
     @staticmethod
     def draw(puyo):
         puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
@@ -156,6 +143,7 @@ class Puyo:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+        self.index = 0
         pass
 
     def change_state(self,  state):

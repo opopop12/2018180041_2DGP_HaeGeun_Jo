@@ -6,15 +6,11 @@ from pico2d import *
 
 import game_world
 import game_framework
-
-
-#from boy import Boy
 from PuyoBackground import Background
 from PuyoBackground import Stage
 from puyo import *
-
+index = 0
 def collide(a, b):
-    # fill here
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
@@ -23,23 +19,41 @@ def collide(a, b):
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
 
-    return True
+    if not(a.get_bb() == b.get_bb()):
+        return True
+
+def collide_side(a,b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    if collide(a, b):
+        if left_a < right_b: return True
+        if right_a > left_b: return True
+
+        return False
+
+
 
 name = "MainState"
 
-puyo = None
+puyos = []
 PuyoBackground = None
 PuyoStage = None
 font = None
 
 def enter():
-    global PuyoBackground, PuyoStage, puyo
-    puyo = Puyo()
+    global PuyoBackground, PuyoStage, puyos
+    puyos = [Puyo() for i in range(48)]
     PuyoBackground = Background()
     PuyoStage = Stage()
     game_world.add_object(PuyoBackground,0)
     game_world.add_object(PuyoStage,1)
-    game_world.add_object(puyo,2)
+    game_world.add_object(puyos[main_state.index],2)
 
 
 def exit():
@@ -62,17 +76,24 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            puyo.handle_event(event)
+            puyos[main_state.index].handle_event(event)
 
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    if collide(PuyoStage,puyo):
-        game_framework.push_state(main_state)
-    #if collide(puyo, puyo):
-        #game_framework.push_state(main_state)
+    if collide(PuyoStage,puyos[main_state.index]):
+        main_state.index+=1
+        print(main_state.index)
+        return game_framework.push_state(main_state)
+    for puyo in puyos:
+        if main_state.index >= 1 and collide(puyo, puyos[main_state.index]):
+            main_state.index += 1
+            print(main_state.index)
+            return game_framework.push_state(main_state)
+
 
 def draw():
+
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
