@@ -130,18 +130,18 @@ class Puyo:
 
     def __init__(self):
         self.x, self.y = 445,830
-        self.image = load_image('PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
+        self.image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Puyo\\PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
         self.lastline = 200
         self.line = 0
         self.dir = 1
         self.gravity = 1
         self.gravitytimer = 200
-        self.frame = random.randint(1,5)
-        self.frame2 = random.randint(1,5)
+        self.frame = random.randint(1, 5)
+        self.frame2 = random.randint(1, 5)
         self.timer = 0
         self.event_que = []
         self.cur_state = IdleState
-        self.cur_state.enter(self,None)
+        self.cur_state.enter(self, None)
         pass
 
     def newpuyo(self):
@@ -150,17 +150,19 @@ class Puyo:
         pass
 
     def change_state(self,  state):
-        if len(self.event_que)>0:
+        if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.cur_state.exit(self,event)
+            self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self,event)
+            self.cur_state.enter(self, event)
         # fill here
         pass
 
+    def get_bb(self):
+        return self.x - 35, self.y - 35, self.x + 35, self.y + 35
 
     def add_event(self, event):
-        self.event_que.insert(0,event)
+        self.event_que.insert(0, event)
         # fill here
         pass
 
@@ -168,7 +170,7 @@ class Puyo:
     def update(self):
         # fill here
         self.cur_state.do(self)
-        if len(self.event_que)>0:
+        if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
@@ -179,6 +181,7 @@ class Puyo:
     def draw(self):
         self.cur_state.draw(self)
         # fill here
+        draw_rectangle(*self.get_bb())
         pass
 
 

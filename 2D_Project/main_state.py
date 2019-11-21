@@ -11,30 +11,39 @@ import game_framework
 #from boy import Boy
 from PuyoBackground import Background
 from PuyoBackground import Stage
-from puyo import Puyo
+from puyo import *
 
+def collide(a, b):
+    # fill here
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 name = "MainState"
 
 puyo = None
-puyo1 =None
 PuyoBackground = None
 PuyoStage = None
 font = None
 
 def enter():
-    global PuyoBackground, PuyoStage, puyo, puyonext
+    global PuyoBackground, PuyoStage, puyo
     puyo = Puyo()
-    puyonext = Puyo()
     PuyoBackground = Background()
     PuyoStage = Stage()
     game_world.add_object(PuyoBackground,0)
     game_world.add_object(PuyoStage,1)
     game_world.add_object(puyo,2)
 
+
 def exit():
     game_world.clear()
-
 
 
 def pause():
@@ -46,8 +55,6 @@ def resume():
 
 
 def handle_events():
-    global  index
-    index=0
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -55,25 +62,17 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            if index == 0:
-                puyo.handle_event(event)
-                index +=1
-            elif index == 1:
-                puyonext.handle_event(event)
-                index -=1
-
+            puyo.handle_event(event)
 
 def update():
-    puyo.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 def draw():
     clear_canvas()
-    PuyoBackground.draw()
-    PuyoStage.draw()
-    puyo.draw()
-    puyo1.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()
-
 
 
 

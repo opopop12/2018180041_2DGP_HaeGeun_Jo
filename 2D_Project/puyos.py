@@ -8,7 +8,7 @@ class Puyos:
 
     def __init__(self, x=400, y= 300, gravity = 1):
         if Puyos.image == None:
-            Puyos.image = load_image('PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
+            Puyos.image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Puyo\\PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
             self.x, self.y, self.gravity = x, y, gravity
 
     def draw(self):

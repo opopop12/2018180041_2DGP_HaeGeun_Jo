@@ -2,7 +2,7 @@ from pico2d import *
 
 class Background:
     def __init__(self):
-        self.image = load_image('5bf0a388b67da.jpg')
+        self.image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\Background\\5bf0a388b67da.jpg')
     def update(self):
         pass
     def draw(self):
@@ -12,12 +12,13 @@ left = 192
 
 #image * 1.4
 #image2 * 1.5
-#image3 *2  +201
+#image3 *2  +20
+
 class Stage:
     def __init__(self):
-        self.image = load_image('stage.png')
-        self.image2 = load_image('stage_sub_3.png')
-        self.image3 = load_image('PC Computer - Puyo Puyo Tetris - Character Boards.png')
+        self.image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Background\\stage.png')
+        self.image2 = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Background\\stage_sub_3.png')
+        self.image3 = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Background\\PC Computer - Puyo Puyo Tetris - Character Boards.png')
 
     def update(self):
         pass
