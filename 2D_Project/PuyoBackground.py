@@ -10,11 +10,11 @@ class Background:
     def update(self):
         pass
     def draw(self):
-        self.image.draw(960,540)
+        #self.image.draw(960,540)
         if self.rand ==1:
             self.image.draw(960, 540)
-        #if self.rand ==2:
-            #self.image2.draw(960,540)
+        if self.rand ==2:
+            self.image2.draw(960,540)
 
 left = 192
 
