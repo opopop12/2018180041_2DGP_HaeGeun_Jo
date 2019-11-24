@@ -12,7 +12,7 @@ def enter():
     image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\Background\\thumb-1920-671798.jpg')
     image2 = load_image("6481489.jpg")
     bgm = load_music('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Sound\\PC Computer - Puyo Puyo Tetris - Sound Effects\\Other Sound Effects\\03 It is Main Menu!.mp3')
-    bgm.set_volume(64)
+    bgm.set_volume(10)
     bgm.repeat_play()
 
 def exit():

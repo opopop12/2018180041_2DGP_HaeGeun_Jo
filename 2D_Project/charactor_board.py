@@ -10,3 +10,4 @@ class Charactor_Board:
 
     def draw(self):
         self.image.clip_draw(399, 1172, 192, 384, 480, 540, 415, 790)
+        self.image.clip_draw(399, 1172, 192, 384, 480+960, 540, 415, 790)

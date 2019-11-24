@@ -1,6 +1,7 @@
 from pico2d import *
 import random
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
+import game_world
 
 import game_framework
 import main_state
@@ -23,16 +24,16 @@ RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, Z_UP, X_UP, PUYO_TIMER = range(13)
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
-    (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
+    #(SDL_KEYDOWN, SDLK_UP): UP_DOWN,
     (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
-    (SDL_KEYDOWN, SDLK_z): Z_DOWN,
-    (SDL_KEYDOWN, SDLK_x): X_DOWN,
+    #(SDL_KEYDOWN, SDLK_z): Z_DOWN,
+    #(SDL_KEYDOWN, SDLK_x): X_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-    (SDL_KEYUP, SDLK_UP): UP_UP,
+    #(SDL_KEYUP, SDLK_UP): UP_UP,
     (SDL_KEYUP, SDLK_DOWN): DOWN_UP,
-    (SDL_KEYUP, SDLK_z): Z_UP,
-    (SDL_KEYUP, SDLK_x): X_UP
+    #(SDL_KEYUP, SDLK_z): Z_UP,
+    #(SDL_KEYUP, SDLK_x): X_UP
 }
 
 
@@ -46,10 +47,10 @@ class IdleState:
             puyo.line -=1
             pass
         elif event == DOWN_DOWN:
-            puyo.gravity +=0.5 #RUN_SPEED_PPS
+            puyo.gravity +=1 #RUN_SPEED_PPS
             pass
         elif event == DOWN_UP:
-            puyo.gravity = 0.5 #RUN_SPEED_PPS
+            puyo.gravity = 1 #RUN_SPEED_PPS
 
     @staticmethod
     def exit(puyo,event):
@@ -62,7 +63,7 @@ class IdleState:
         pass
     @staticmethod
     def draw(puyo):
-        puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
+        #puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
         puyo.image.clip_draw(0,488-puyo.frame2*35,35,35,puyo.x,puyo.y,35*2,35*2)
 
 class DropState:
@@ -73,9 +74,9 @@ class DropState:
         elif event == LEFT_DOWN:
             puyo.line -=1
         elif event == DOWN_DOWN:
-            puyo.gravity +=0.5
+            puyo.gravity +=1
         elif event == DOWN_UP:
-            puyo.gravity = 0.5
+            puyo.gravity = 1
 
     @staticmethod
     def exit(puyo,event):
@@ -94,38 +95,38 @@ class DropState:
 
     @staticmethod
     def draw(puyo):
-        puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
+        #puyo.image.clip_draw(0,488-puyo.frame*35,35,35,puyo.x,puyo.y+35*1.8,35*2,35*2)
         puyo.image.clip_draw(0,488-puyo.frame2*35,35,35,puyo.x,puyo.y,35*2,35*2)
     pass
 
 
-class RotateState:
-    @staticmethod
-    def enter (puyo,event):
-       # if event == Z_DOWN:
-        pass
-    pass
+#class RotateState:
+#    @staticmethod
+#    def enter (puyo,event):
+#       # if event == Z_DOWN:
+ #       pass
+#    pass
 
 
 next_state_table = {
     IdleState: {RIGHT_DOWN:DropState, LEFT_DOWN:DropState,
                 DOWN_DOWN:DropState, RIGHT_UP:DropState,
-                LEFT_UP:DropState, DOWN_UP:DropState,
-                UP_DOWN:RotateState, Z_DOWN:RotateState,
-                X_DOWN:RotateState, UP_UP:RotateState,
-                X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState},
+                LEFT_UP:DropState, DOWN_UP:DropState},
+                #UP_DOWN:RotateState, Z_DOWN:RotateState,
+                #X_DOWN:RotateState, UP_UP:RotateState,
+                #X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState},
     DropState: {RIGHT_DOWN:IdleState, LEFT_DOWN:IdleState,
                 DOWN_DOWN:IdleState, RIGHT_UP:IdleState,
-                LEFT_UP:IdleState, DOWN_UP:IdleState,
-                UP_DOWN:RotateState, Z_DOWN:RotateState,
-                X_DOWN:RotateState, UP_UP:RotateState,
-                X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState},
-    RotateState: {RIGHT_DOWN:IdleState, LEFT_DOWN:IdleState,
-                DOWN_DOWN:IdleState, RIGHT_UP:IdleState,
-                LEFT_UP:IdleState, DOWN_UP:IdleState,
-                UP_DOWN:RotateState, Z_DOWN:RotateState,
-                X_DOWN:RotateState, UP_UP:RotateState,
-                X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState}
+                LEFT_UP:IdleState, DOWN_UP:IdleState}
+                #UP_DOWN:RotateState, Z_DOWN:RotateState,
+                #X_DOWN:RotateState, UP_UP:RotateState,
+                #X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState},
+    #RotateState: {RIGHT_DOWN:IdleState, LEFT_DOWN:IdleState,
+    #            DOWN_DOWN:IdleState, RIGHT_UP:IdleState,
+    #            LEFT_UP:IdleState, DOWN_UP:IdleState,
+    #            UP_DOWN:RotateState, Z_DOWN:RotateState,
+    #            X_DOWN:RotateState, UP_UP:RotateState,
+    #            X_UP:RotateState, Z_UP:RotateState,PUYO_TIMER:IdleState}
 }
 
 class Puyo:
@@ -144,6 +145,8 @@ class Puyo:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
         self.index = 0
+        self.movesound = load_music('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Sound\\PC Computer - Puyo Puyo Tetris - Sound Effects\\Other Sound Effects\\se_bank [47].wav')
+        self.movesound.set_volume(10)
         pass
 
     def change_state(self,  state):
@@ -162,6 +165,8 @@ class Puyo:
         self.event_que.insert(0, event)
         # fill here
         pass
+    def stop(self):
+        self.gravity=0
 
     def build_behavior_tree(self):
         #drop_node = LeafNode("Gravity Drop", self.drop)
