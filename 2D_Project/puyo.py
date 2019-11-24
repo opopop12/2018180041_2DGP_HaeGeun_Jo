@@ -1,5 +1,6 @@
 from pico2d import *
 import random
+from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 
 import game_framework
 import main_state
@@ -45,10 +46,10 @@ class IdleState:
             puyo.line -=1
             pass
         elif event == DOWN_DOWN:
-            puyo.gravity +=1 #RUN_SPEED_PPS
+            puyo.gravity +=0.5 #RUN_SPEED_PPS
             pass
         elif event == DOWN_UP:
-            puyo.gravity = 1 #RUN_SPEED_PPS
+            puyo.gravity = 0.5 #RUN_SPEED_PPS
 
     @staticmethod
     def exit(puyo,event):
@@ -72,9 +73,9 @@ class DropState:
         elif event == LEFT_DOWN:
             puyo.line -=1
         elif event == DOWN_DOWN:
-            puyo.gravity +=1
+            puyo.gravity +=0.5
         elif event == DOWN_UP:
-            puyo.gravity = 1
+            puyo.gravity = 0.5
 
     @staticmethod
     def exit(puyo,event):
@@ -130,13 +131,12 @@ next_state_table = {
 class Puyo:
 
     def __init__(self):
-        self.x, self.y = 445,830
+        self.x, self.y = 445, 830
         self.image = load_image('D:\\github\\2018180041_2DGP_HaeGeun_Jo\\2D_Project\\Puyo\\PC Computer - Puyo Puyo Tetris - Puyo Puyo Elements12.png')
         self.lastline = 200
         self.line = 0
         self.dir = 1
-        self.gravity = 1
-        self.gravitytimer = 200
+        self.gravity = 0.5
         self.frame = random.randint(1, 5)
         self.frame2 = random.randint(1, 5)
         self.timer = 0
@@ -163,6 +163,15 @@ class Puyo:
         # fill here
         pass
 
+    def build_behavior_tree(self):
+        #drop_node = LeafNode("Gravity Drop", self.drop)
+        find_near_puyo_node = LeafNode("Find Near Puyo", self.find_near_puyo)
+        delete_puyo_node = LeafNode("Delete Puyo", self.delete_puyo)
+        puyo_block_node = SequenceNode("Puyo Block")
+        puyo_block_node.add_children(find_near_puyo_node, delete_puyo_node)
+        puyo_drop_node = SelectorNode("Puyo Drop")
+        puyo_drop_node.add_children(puyo_block_node)#,drop_node)
+        self.bt = BehaviorTree(puyo_drop_node)
 
     def update(self):
         # fill here
@@ -172,6 +181,7 @@ class Puyo:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+        #self.bt.run()
         pass
 
 
