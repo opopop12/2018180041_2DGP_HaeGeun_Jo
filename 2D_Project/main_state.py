@@ -94,14 +94,15 @@ def update():
         game_world.add_object(puyo[main_state.index],2)
         puyo[main_state.index + 1].y += 35 * 1.8
         game_world.add_object(puyo[main_state.index+1],2)
-#    for puyo in puyos:
-#        if main_state.index >= 1 and collide(puyo, puyos[main_state.index]):
-#            if main_state.index < 47:
-#                main_state.index += 1
-#            else:
-#                game_framework.quit()
-#            print(main_state.index)
-#          return game_framework.push_state(main_state)
+
+    for puyo in puyos:
+        if main_state.index >= 1 and collide(puyo, puyos[main_state.index]):
+            if main_state.index < 47:
+                main_state.index += 1
+            else:
+                game_framework.quit()
+            print(main_state.index)
+          return game_framework.push_state(main_state)
 
 
 def draw():
