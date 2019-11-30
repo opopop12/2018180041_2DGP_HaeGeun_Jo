@@ -32,7 +32,7 @@ PuyoBackground = None
 PuyoStage = None
 font = None
 charactor_board = None
-bgm = None
+#bgm = None
 
 def enter():
     global PuyoBackground, PuyoStage, puyo, puyo2, charactor_board , bgm
